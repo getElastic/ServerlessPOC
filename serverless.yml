@@ -1,0 +1,30 @@
+service: my-serverless-app  # Name of your service
+
+provider:
+  name: aws
+  runtime: nodejs14.x  # Runtime environment for your functions
+  region: us-east-1     # AWS region where your service will be deployed
+
+functions:
+  helloWorld:
+    handler: handler.helloWorld  # Name of the file and function that handles this endpoint
+    events:
+      - http:
+          path: hello
+          method: get
+
+resources:
+  Resources:
+    MyDynamoDBTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: my-table
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: N
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
